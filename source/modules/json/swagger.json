@@ -1,0 +1,170 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "description": "This API is used to create and update accounts.",
+      "version": "2021-04-08T17:46:16Z",
+      "title": "AccountProvisioningAPI"
+    },
+    "basePath": "/v1",
+    "schemes": [
+      "https"
+    ],
+    "paths": {
+      "/accounts": {
+        "post": {
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "accountProvisioningModel",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/accountProvisioningModel"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "200 response"
+            },
+            "400": {
+              "description": "400 response"
+            },
+            "409": {
+              "description": "409 response"
+            },
+            "500": {
+              "description": "500 response"
+            }
+          },
+          "security": [
+            {
+              "aws-lambda-authorizer": []
+            }
+          ],
+          "x-amazon-apigateway-request-validator": "Validate body",
+          "x-amazon-apigateway-integration": {
+            "httpMethod": "POST",
+            "uri": "${account_provision_post_uri}",
+            "responses": {
+              "default": {
+                "statusCode": "200"
+              }
+            },
+            "passthroughBehavior": "when_no_match",
+            "contentHandling": "CONVERT_TO_TEXT",
+            "type": "aws_proxy"
+          }
+        },
+        "put": {
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "account-id",
+              "in": "query",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "body",
+              "name": "accountProvisioningModel",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/accountProvisioningModel"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "200 response"
+            },
+            "400": {
+              "description": "400 response"
+            },
+            "500": {
+              "description": "500 response"
+            }
+          },
+          "security": [
+            {
+              "aws-lambda-authorizer": []
+            }
+          ],
+          "x-amazon-apigateway-request-validator": "Validate body, query string parameters, and headers",
+          "x-amazon-apigateway-integration": {
+            "httpMethod": "POST",
+            "uri": "${account_provision_put_uri}",
+            "responses": {
+              "default": {
+                "statusCode": "200"
+              }
+            },
+            "passthroughBehavior": "when_no_match",
+            "contentHandling": "CONVERT_TO_TEXT",
+            "type": "aws_proxy"
+          }
+        }
+      }
+    },
+    "definitions": {
+      "accountProvisioningModel": {
+        "type": "object",
+        "required": [
+          "accountPOC",
+          "applicationId",
+          "costCenter",
+          "env",
+          "lob",
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^AWS_[A-Z]+_[a-zA-Z0-9]+_(Lab|Dev|Test|Prod)$"
+          },
+          "costCenter": {
+            "type": "string",
+            "pattern": "^\\d{5}$"
+          },
+          "accountPOC": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._%+-]+\\@example\\.com$"
+          },
+          "applicationId": {
+            "type": "string",
+            "pattern": "^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$"
+          },
+          "env": {
+            "type": "string",
+            "pattern": "^LAB|DEV|TEST|PROD$"
+          },
+          "lob": {
+            "type": "string",
+            "pattern": "^[A-Z]+$"
+          }
+        },
+        "title": "requestPayload"
+      }
+    },    
+    "x-amazon-apigateway-request-validators": {
+      "Validate body": {
+        "validateRequestParameters": false,
+        "validateRequestBody": true
+      },
+      "Validate body, query string parameters, and headers": {
+        "validateRequestParameters": true,
+        "validateRequestBody": true
+      }
+    }
+  }
+  

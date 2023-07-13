@@ -1,0 +1,8 @@
+{
+    "name": "aws_SEC_test_Dev",
+    "costCenter": "01234",
+    "accountPOC": "john.doe@example.com",
+    "applicationId": "00000000-0000-0000-0000-000000000000",
+    "env": "DEV",
+    "lob": "SEC"
+}
